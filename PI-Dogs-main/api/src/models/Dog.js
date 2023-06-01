@@ -8,8 +8,8 @@ module.exports = (sequelize) => {
     "Dog",
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypes.INTEGER,
+
         allowNull: false,
         primaryKey: true,
         unique: true,
@@ -21,6 +21,7 @@ module.exports = (sequelize) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         reference: {
           model: Temperaments,
           key: "name",
@@ -34,7 +35,7 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      años: {
+      anios: {
         type: DataTypes.STRING,
         allowNull: false,
       },

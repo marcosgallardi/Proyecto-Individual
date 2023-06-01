@@ -1,4 +1,4 @@
-//api key= live_ wEQ1vunaPoA5w2ApaafgeZBV09B6Es Ku4vvwDK2XMbriQJ3dtFncvuyK8n1S Bb16
+const {uploadTemperaments} = require('./src/controllers/getTemperaments')
 
 //                       _oo0oo_
 //                      o8888888o
@@ -23,7 +23,8 @@ const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
+conn.sync({ alter: true }).then(() => {
+  uploadTemperaments()
   server.listen(3001, () => {
     console.log("%s listening at 3001"); // eslint-disable-line no-console
   });
