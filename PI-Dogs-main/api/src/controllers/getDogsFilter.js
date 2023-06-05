@@ -1,8 +1,8 @@
 require("dotenv").config();
 const { API_KEY } = process.env;
-
 const axios = require("axios");
 const { Dog } = require("../db");
+const getImages = require("./getImage");
 
 const getDogsFilter = async (q) => {
   try {
@@ -15,6 +15,16 @@ const getDogsFilter = async (q) => {
         },
       }
     );
+
+    for (const perro in data) {
+      if (data[perro].reference_image_id) {
+        data[perro].image = await getImages(data[perro].reference_image_id);
+      } else {
+        data[perro].image = "https://i.imgur.com/ZoOyqYt.jpg";
+      }
+    }
+
+    //let aux = { ...data, image: await getImages(data.reference_image_id) };
 
     if (!data) {
       return dogsDB;

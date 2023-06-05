@@ -38,7 +38,7 @@ router.get("/search", async (req, res) => {
   let { q } = req.query;
 
   try {
-    let dogsFilter = await getDogsFilter(q);
+    let dogsFilter = await getDogsFilter(q.toLocaleLowerCase());
     res.status(200).json(dogsFilter);
   } catch (error) {
     res.status(404).json({ error: "Raza inexistente" });
@@ -47,9 +47,9 @@ router.get("/search", async (req, res) => {
 
 router.post("/dogs", async (req, res) => {
   try {
-    let { name, anios, altura, image, peso } = req.body;
+    let { name, anios, altura, image, peso, temperaments } = req.body;
 
-    let createDog = await postDogs(name, anios, altura, image, peso);
+    let createDog = await postDogs(name, anios, altura, image, peso, temperaments);
     res.status(200).json(createDog);
   } catch (error) {
     res.status(404).json({ error: error.message });

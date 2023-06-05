@@ -2,14 +2,13 @@ require("dotenv").config();
 const axios = require("axios");
 const { API_KEY } = process.env;
 const { Dog } = require("../db");
+const getImages = require("./getImage");
 
 const getDogsByBreed = async (idRaza) => {
-  
   try {
-
     let finder = await Dog.findByPk(idRaza);
 
-    let { data: breedDetail } = await axios.get(
+    let { data } = await axios.get(
       `https://api.thedogapi.com/v1/breeds/${idRaza}`,
       {
         headers: {
@@ -18,11 +17,12 @@ const getDogsByBreed = async (idRaza) => {
       }
     );
 
-    if (!breedDetail) {
+    let aux = { ...data, image: await getImages(data.reference_image_id) };
+    if (!data) {
       return finder;
     }
 
-    return breedDetail;
+    return aux;
   } catch (error) {
     throw error;
   }

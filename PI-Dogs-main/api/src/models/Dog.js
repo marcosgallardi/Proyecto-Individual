@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const Temperaments = require("./Temperaments");
+const Temperament = require("./Temperament");
 // Exportamos una funcion que define el modelo
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
     {
       id: {
         type: DataTypes.INTEGER,
-
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true,
         unique: true,
@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
         allowNull: false,
         unique: true,
         reference: {
-          model: Temperaments,
+          model: Temperament,
           key: "name",
         },
       },
