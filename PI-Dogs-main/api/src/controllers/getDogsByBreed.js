@@ -3,10 +3,17 @@ const axios = require("axios");
 const { API_KEY } = process.env;
 const { Dog } = require("../db");
 const getImages = require("./getImage");
+const { Temperament } = require("../db");
 
 const getDogsByBreed = async (idRaza) => {
   try {
-    let finder = await Dog.findByPk(idRaza);
+    if (idRaza >= 172) return await Dog.findByPk(idRaza,{
+      include:[
+        {
+          model: Temperament,
+        }
+      ]
+    });
 
     let { data } = await axios.get(
       `https://api.thedogapi.com/v1/breeds/${idRaza}`,
@@ -18,9 +25,6 @@ const getDogsByBreed = async (idRaza) => {
     );
 
     let aux = { ...data, image: await getImages(data.reference_image_id) };
-    if (!data) {
-      return finder;
-    }
 
     return aux;
   } catch (error) {

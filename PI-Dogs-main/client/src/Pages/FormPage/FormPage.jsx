@@ -1,7 +1,10 @@
-import React from 'react'
+import React from "react";
+import { Form } from "../../Components/Form/Form";
 
 export const FormPage = () => {
   return (
-    <div>FormPage</div>
-  )
-}
+    <div>
+      <Form />
+    </div>
+  );
+};

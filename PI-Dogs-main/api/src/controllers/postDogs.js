@@ -1,27 +1,20 @@
-const {Dog} = require("../db");
-const {Temperament} = require("../db");
+const { Dog } = require("../db");
+const { Temperament } = require("../db");
 
-const postDogs = async (name, anios, altura, image, peso,temperaments) => {
-
- 
-
-  /*let newDog = await Dog.create({
-    name,
-    anios,
-    altura,
-    image,
-    peso,
-    temperament: temperamentDb,
-  });
-  return newDog;
-} */
-
+const postDogs = async ({
+  image,
+  id,
+  name,
+  anios,
+  altura,
+  peso,
+  temperaments,
+}) => {
   try {
-    if (!name || !anios || !altura || !image || !peso || !temperaments) {
+    if (!id || !name || !anios || !altura || !peso || !temperaments || !image) {
       return "faltan datos";
     }
-
-    let newDog = await Dog.create({ name, anios, altura, image, peso });
+    let newDog = await Dog.create({ id, name, anios, altura, image, peso });
     await newDog.addTemperaments(temperaments);
     return newDog;
   } catch (error) {
@@ -30,3 +23,20 @@ const postDogs = async (name, anios, altura, image, peso,temperaments) => {
 };
 
 module.exports = postDogs;
+
+/*const postDogs = async (id, name, anios, altura, peso, temperaments, image) => {
+  try {
+    if (!id || !name || !anios || !altura || !peso || !temperaments || !image) {
+      return "faltan datos";
+    }
+
+    let newDog = await Dog.create({ id, name, anios, altura, image, peso });
+    await newDog.addTemperaments(temperaments);
+    return newDog;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+module.exports = postDogs;
+*/

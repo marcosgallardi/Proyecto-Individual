@@ -1,22 +1,29 @@
-import React from "react";
-import { FilterByTemperament } from "./FilterByTemperament";
-import styled from "../Navbar/Navbar.module.css";
+import { Link } from "react-router-dom";
 import { SearchBar } from "../SearchBar/SearchBar";
-import { FilterByOrigin } from "./FilterByOrigin";
-import { AcDc } from "../Navbar/acDc";
+import {
+  AcDcBreed,
+  AcDcWeight,
+  FilterByOrigin,
+  FilterByTemperament,
+} from "./index";
+import styled from "../Navbar/Navbar.module.css";
 
 export const Navbar = () => {
   return (
     <div>
       <nav className={styled.nav}>
         <ul>
-        <div className={styled.link}>
-            <AcDc title="Weight"/>
+          <Link to="/formpage">
+            <button className={styled.dropdown}>Create Dog</button>
+          </Link>
+
+          <div className={styled.link}>
+            <AcDcWeight title="Weight" />
           </div>
           <div className={styled.link}>
-            <AcDc title="A-z"/>
+            <AcDcBreed title="A-z" />
           </div>
-        <div className={styled.link}>
+          <div className={styled.link}>
             <FilterByOrigin />
           </div>
           <div className={styled.link}>

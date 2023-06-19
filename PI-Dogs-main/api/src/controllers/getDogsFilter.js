@@ -1,13 +1,20 @@
-require("dotenv").config();
-const { API_KEY } = process.env;
-const axios = require("axios");
+//require("dotenv").config();
+//const { API_KEY } = process.env;
+//const axios = require("axios");
 const { Dog } = require("../db");
-const getImages = require("./getImage");
+const getDogs = require("./getDogs");
+//const getImages = require("./getImage");
 
 const getDogsFilter = async (q) => {
   try {
     let dogsDB = await Dog.findOne({ where: { name: q } });
-    let { data } = await axios.get(
+    let dogsApi = await getDogs();
+
+    let filterDogs = dogsApi.filter((perro) => {
+      return perro.name.toLowerCase().includes(q);
+    });
+
+    /*  let { data } = await axios.get(
       `https://api.thedogapi.com/v1/breeds/search?q=${q}`,
       {
         headers: {
@@ -23,13 +30,13 @@ const getDogsFilter = async (q) => {
         data[perro].image = "https://i.imgur.com/ZoOyqYt.jpg";
       }
     }
-
+*/
     //let aux = { ...data, image: await getImages(data.reference_image_id) };
 
-    if (!data) {
+    if (!filterDogs) {
       return dogsDB;
     }
-    return data;
+    return filterDogs;
   } catch (error) {
     throw new Error(error);
   }

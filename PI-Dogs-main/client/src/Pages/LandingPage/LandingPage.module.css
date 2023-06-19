@@ -1,5 +1,5 @@
 .fondo {
-    margin: 0;
+   
     padding: 0;
     background-image: url("../../Assets/Images/background-1.jpg");
    
@@ -10,6 +10,7 @@
     position: relative;
     overflow: hidden;
     margin: -8px;
+    margin-bottom: -27px;
 }
 
 .fondo .background{

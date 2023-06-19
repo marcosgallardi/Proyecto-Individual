@@ -1,22 +1,30 @@
-import React from "react";
+import { Link } from "react-router-dom";
+import styled from "../Card/Card.module.css";
 
-export const Card = () => {
+export const Card = ({ id, image, name, temperament, weight }) => {
   return (
     <>
-      <div className={styled.card}>
-        <img src={image} alt="" />
+      <Link to={`/detailpage/${id}`} className={styled.decoration}>
+        <div className={styled.card}>
+          {image && <img src={image} alt={name} />}
 
-        <div className={styled.espacio}>
-          <a className={styled.letra}>{name}</a>
+          <div className={styled.espacio}>
+            {name && <a className={styled.letra}>{name}</a>}
 
-          <p>
-            <span className={styled.black}>Especie:</span> {species}
-          </p>
-          <p>
-            <span className={styled.black}>Genero:</span> {gender}
-          </p>
+            {temperament && (
+              <p>
+                <span className={styled.black}>Temperament:</span> {temperament}
+              </p>
+            )}
+            {weight && (
+              <p>
+                <span className={styled.black}>Weight:</span>
+                {weight}
+              </p>
+            )}
+          </div>
         </div>
-      </div>
+      </Link>
     </>
   );
 };

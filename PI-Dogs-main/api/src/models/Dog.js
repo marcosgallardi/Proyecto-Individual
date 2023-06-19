@@ -28,11 +28,11 @@ module.exports = (sequelize) => {
         },
       },
       altura: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       peso: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       anios: {

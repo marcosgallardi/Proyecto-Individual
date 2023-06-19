@@ -5,13 +5,11 @@ const getDogsFilter = require("../controllers/getDogsFilter");
 const postDogs = require("../controllers/postDogs");
 const { getTemperaments } = require("../controllers/getTemperaments");
 
-// Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
+
+
 
 const router = Router();
 
-// Configurar los routers
-// Ejemplo: router.use('/auth', authRouter);
 
 router.get("/dogs", async (req, res) => {
   try {
@@ -38,7 +36,7 @@ router.get("/search", async (req, res) => {
   let { q } = req.query;
 
   try {
-    let dogsFilter = await getDogsFilter(q.toLocaleLowerCase());
+    let dogsFilter = await getDogsFilter(q.toLowerCase());
     res.status(200).json(dogsFilter);
   } catch (error) {
     res.status(404).json({ error: "Raza inexistente" });
@@ -46,10 +44,19 @@ router.get("/search", async (req, res) => {
 });
 
 router.post("/dogs", async (req, res) => {
+  let { id, name, anios, altura, peso, temperaments, image } = req.body;
   try {
-    let { name, anios, altura, image, peso, temperaments } = req.body;
-
-    let createDog = await postDogs(name, anios, altura, image, peso, temperaments);
+  console.log("ruta",image)
+    let createDog = await postDogs(
+     { id,
+      name,
+      image,
+      anios,
+      altura,
+      peso,
+      temperaments}
+    );
+    console.log("createdog",createDog)
     res.status(200).json(createDog);
   } catch (error) {
     res.status(404).json({ error: error.message });
