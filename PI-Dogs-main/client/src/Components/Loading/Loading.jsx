@@ -1,6 +1,6 @@
 import React from "react";
 import loadingDog from "../../Assets/Images/LoadingDog.png";
-import styled from "../Loading/Loading.module.css";
+import styled from "./Loading.module.css";
 
 export const Loading = () => {
   return (

@@ -7,12 +7,16 @@ import {
   FilterByTemperament,
 } from "./index";
 import styled from "../Navbar/Navbar.module.css";
+import { ResetFilters } from "./ResetFilters";
 
 export const Navbar = () => {
   return (
     <div>
       <nav className={styled.nav}>
         <ul>
+        <div className={styled.link}>
+            <ResetFilters />
+          </div>
           <Link to="/formpage">
             <button className={styled.dropdown}>Create Dog</button>
           </Link>
@@ -32,6 +36,7 @@ export const Navbar = () => {
           <div className={styled.link}>
             <SearchBar />
           </div>
+          
         </ul>
       </nav>
     </div>

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Card } from "../Card/Card";
 import { loading } from "../../redux/actions";
 import { Loading } from "../Loading/Loading";
+import { FailSearch } from "../SearchBar/FailSearch";
 
 export const Cards = () => {
   let dog = useSelector((state) => state.dogs);
@@ -22,14 +23,15 @@ export const Cards = () => {
     };
   }, [dog]);
 
-  
-
   const filterDog = () => {
     return dog.slice(currentPage, currentPage + 8);
   };
+  console.log(filterDog())
 
   const handleIncrement = () => {
-    setCurrentPage(currentPage + 8);
+    
+    if (filterDog().length === 8)
+      setCurrentPage(currentPage + 8);
   };
   const handleDecrement = () => {
     if (currentPage > 0) setCurrentPage(currentPage - 8);
@@ -37,28 +39,30 @@ export const Cards = () => {
 
   if (isLoading) {
     return <Loading />;
-  } else {
-    return (
-      <>
-        <div className={styled.container}>
-          {filterDog().map(({ id, name, image, temperament, weight }) => {
-            return (
-              <Card
-                key={id}
-                id={id}
-                name={name}
-                image={image}
-                temperament={temperament}
-                weight={weight}
-              />
-            );
-          })}
-        </div>
-        <div className={styled.boton}>
-          <button onClick={handleDecrement}>Anterior</button>
-          <button onClick={handleIncrement}>Siguiente</button>
-        </div>
-      </>
-    );
+  } else if (dog.length === 0) {
+    return <FailSearch/>;
   }
+
+  return (
+    <>
+      <div className={styled.container}>
+        {filterDog().map(({ id, name, image, temperament, weight }) => {
+          return (
+            <Card
+              key={id}
+              id={id}
+              name={name}
+              image={image}
+              temperament={temperament}
+              weight={weight}
+            />
+          );
+        })}
+      </div>
+      <div className={styled.boton}>
+        <button onClick={handleDecrement}>Anterior</button>
+        <button onClick={handleIncrement}>Siguiente</button>
+      </div>
+    </>
+  );
 };

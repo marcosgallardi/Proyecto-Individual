@@ -16,6 +16,7 @@ export const Form = () => {
   };
 
   let temperamentos = useSelector((state) => state.temperaments);
+  let perros = useSelector((state) => state.dogs);
 
   const [validate, setValidate] = useState({});
 
@@ -25,6 +26,9 @@ export const Form = () => {
 
   const [dog, setDog] = useState(initialState);
 
+  let coincidence = perros.filter((p) => p.name.includes(dog.name));
+
+  console.log(coincidence)
   let handleOnChangeTemp = (e) => {
     let { value } = e.target;
 
@@ -51,41 +55,50 @@ export const Form = () => {
 
   let handleSubmitDog = async (e) => {
     e.preventDefault();
-    let filter = temperamentos.filter((t) => temp.includes(t.name));
-    let temperaments = filter.map((t) => t.id);
-    let idGenerado = Math.floor(Math.random() * (888898 - 173 + 1) + 173 / 20);
+    let { errors } = validate;
 
-    try {
-      const formData = new FormData();
-      formData.append("upload_preset", "dogsApp");
-      formData.append("file", filed);
-
-      const resp = await axios.post(
-        "https://api.cloudinary.com/v1_1/dumjfq5mk/upload",
-        formData
+    if (dog !== initialState && Object.values(errors).length === 0) {
+      let filter = temperamentos.filter((t) => temp.includes(t.name));
+      let temperaments = filter.map((t) => t.id);
+      let idGenerado = Math.floor(
+        Math.random() * (888898 - 173 + 1) + 173 / 20
       );
 
-      let imageUrl = resp.data.secure_url;
+      try {
+        const formData = new FormData();
+        formData.append("upload_preset", "dogsApp");
+        formData.append("file", filed);
 
-      let dogs = {
-        id: idGenerado,
-        name: dog.name,
-        image: imageUrl,
-        anios: dog.anios,
-        altura: dog.altura,
-        peso: dog.peso,
-        temperaments: temperaments,
-      };
+        if (coincidence.length > 0) {
+          alert("This dog already exists,Change the name");
+        } else {
+          const resp = await axios.post(
+            "https://api.cloudinary.com/v1_1/dumjfq5mk/upload",
+            formData
+          );
 
-      console.log(dogs);
-      alert("Dog created successfully");
+          let imageUrl = resp.data.secure_url;
 
-      let respuest = await axios.post("http://localhost:3001/dogs", dogs);
-    } catch (error) {
-      throw new Error(error);
+          let dogs = {
+            id: idGenerado,
+            name: dog.name,
+            image: imageUrl,
+            anios: dog.anios,
+            altura: dog.altura,
+            peso: dog.peso,
+            temperaments: temperaments,
+          };
+
+          alert("Dog created successfully");
+          await axios.post("http://localhost:3001/dogs", dogs);
+        }
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    } else {
+      alert("Incorrect or incomplete data.");
     }
   };
-
   return (
     <>
       <BackToHome />
