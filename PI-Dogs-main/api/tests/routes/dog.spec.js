@@ -1,24 +1,32 @@
-/* eslint-disable import/no-extraneous-dependencies */
-const { expect } = require('chai');
-const session = require('supertest-session');
-const app = require('../../src/app.js');
-const { Dog, conn } = require('../../src/db.js');
+const { expect } = require("chai");
+const request = require("supertest");
+const app = require("../../src/app"); // Supongamos que tu archivo principal de la aplicación se llama "app.js"
 
-const agent = session(app);
-const dog = {
-  name: 'Pug',
-};
+describe("GET /dogs", () => {
+  it("should return a list of dogs", (done) => {
+    request(app)
+      .get("/dogs")
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
 
-describe('Videogame routes', () => {
-  before(() => conn.authenticate()
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err);
-  }));
-  beforeEach(() => Dog.sync({ force: true })
-    .then(() => Dog.create(dog)));
-  describe('GET /dogs', () => {
-    it('should get 200', () =>
-      agent.get('/dogs').expect(200)
-    );
+        expect(res.body.length).to.be.greaterThan(0);
+        done();
+      });
+  });
+});
+
+describe("GET /dogs/:idRaza", () => {
+  it("should return an error if the breed ID is not a number", (done) => {
+    const invalidBreedId = "abc"; // Coloca aquí un valor de ID de raza inválido (no es un número)
+    request(app)
+      .get(`/dogs/${invalidBreedId}`)
+      .expect(500)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body).to.have.property("error.message");
+
+        done();
+      });
   });
 });

@@ -5,11 +5,7 @@ const getDogsFilter = require("../controllers/getDogsFilter");
 const postDogs = require("../controllers/postDogs");
 const { getTemperaments } = require("../controllers/getTemperaments");
 
-
-
-
 const router = Router();
-
 
 router.get("/dogs", async (req, res) => {
   try {
@@ -17,7 +13,7 @@ router.get("/dogs", async (req, res) => {
 
     res.status(200).json(dogs);
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -34,32 +30,30 @@ router.get("/dogs/:idRaza", async (req, res) => {
 
 router.get("/search", async (req, res) => {
   let { q } = req.query;
-
   try {
     let dogsFilter = await getDogsFilter(q.toLowerCase());
     res.status(200).json(dogsFilter);
   } catch (error) {
-    res.status(404).json({ error: "Raza inexistente" });
+    res.status(500).json({ error: "Raza inexistente" });
   }
 });
 
 router.post("/dogs", async (req, res) => {
   let { id, name, anios, altura, peso, temperaments, image } = req.body;
   try {
-  console.log("ruta",image)
-    let createDog = await postDogs(
-     { id,
+    let createDog = await postDogs({
+      id,
       name,
       image,
       anios,
       altura,
       peso,
-      temperaments}
-    );
-    console.log("createdog",createDog)
+      temperaments,
+    });
+
     res.status(200).json(createDog);
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 
